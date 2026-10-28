@@ -1,21 +1,17 @@
 # IgirePay – Payment Gateway
 
-## Project Overview
+IgirePay is a Java-based payment gateway developed for the Phase 1 Backend Capstone. It uses JDBC and PostgreSQL to manage customers, accounts, and financial transactions, including deposits, withdrawals, and transfers.
 
-IgirePay is a Java-based payment gateway project developed as part of the Phase 1 Backend Capstone.
+## Features
+- Customer and account management
+- Wallet and savings account types
+- Transaction processing and history retrieval
+- Transaction reporting, including CSV export, daily summaries, and customer statements
+- Data access using DAO classes and custom SQL queries
 
-The project uses Java and JDBC to manage customer and account information stored in a PostgreSQL database.
-
-## Account Types
-
-IgirePay supports the following account types:
-
-- **Wallet Account:** Used to hold a customer's available balance for transactions.
-- **Savings Account:** An account type intended to hold a customer's savings balance.
-
-## Technologies Used
-
+## Technologies
 - Java
+- Maven
 - JDBC
 - PostgreSQL
 - Git and GitHub
