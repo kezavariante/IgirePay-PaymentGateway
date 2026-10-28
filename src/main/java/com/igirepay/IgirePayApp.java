@@ -1,4 +1,3 @@
-
 package com.igirepay;
 
 import com.igirepay.dao.AccountDAO;
@@ -28,11 +27,67 @@ public class IgirePayApp {
     private static final LoanService loanService = new LoanService();
 
     public static void main(String[] args) {
-
         boolean running = true;
 
         while (running) {
-            displayMenu();
+            displayMainMenu();
+            String choice = readLine().trim();
+
+            try {
+                switch (choice) {
+                    case "1":
+                        customerManagementMenu();
+                        break;
+                    case "2":
+                        accountManagementMenu();
+                        break;
+                    case "3":
+                        transactionMenu();
+                        break;
+                    case "4":
+                        pinManagementMenu();
+                        break;
+                    case "5":
+                        loanManagementMenu();
+                        break;
+                    case "0":
+                        running = false;
+                        System.out.println("Thank you for using IgirePay!");
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Try again.");
+                }
+            } catch (Exception e) {
+                System.out.println("Operation failed: " + e.getMessage());
+            }
+
+            System.out.println();
+        }
+
+        scanner.close();
+    }
+
+    private static void displayMainMenu() {
+        System.out.println("========== IGIREPAY ==========");
+        System.out.println("1. Customer Management");
+        System.out.println("2. Account Management");
+        System.out.println("3. Transactions");
+        System.out.println("4. PIN Management");
+        System.out.println("5. Loan Management");
+        System.out.println("0. Exit");
+        System.out.print("Choose a section: ");
+    }
+
+    private static void customerManagementMenu() {
+        boolean inMenu = true;
+
+        while (inMenu) {
+            System.out.println("\n========== CUSTOMER MANAGEMENT ==========");
+            System.out.println("1. Register customer");
+            System.out.println("2. View customer");
+            System.out.println("3. Update customer details");
+            System.out.println("9. Back to main menu");
+            System.out.print("Choose an option: ");
 
             String choice = readLine().trim();
 
@@ -42,101 +97,259 @@ public class IgirePayApp {
                         registerCustomer();
                         break;
                     case "2":
-                        createAccount("WALLET");
-                        break;
-                    case "3":
-                        createAccount("SAVINGS");
-                        break;
-                    case "4":
                         viewCustomer();
                         break;
-                    case "5":
+                    case "3":
                         updateCustomer();
                         break;
-                    case "6":
-                        viewCustomerAccounts();
-                        break;
-                    case "7":
-                        viewAccountBalance();
-                        break;
-                    case "8":
-                        deleteInactiveAccount();
-                        break;
                     case "9":
-                        deposit();
-                        break;
-                    case "10":
-                        withdraw();
-                        break;
-                    case "11":
-                        transfer();
-                        break;
-                    case "12":
-                        viewTransactionHistory();
-                        break;
-                    case "13":
-                        createCustomerPin();
-                        break;
-                    case "14":
-                        validateCustomerPin();
-                        break;
-                    case "15":
-                        changeCustomerPin();
-                        break;
-                    case "16":
-                        requestLoan();
-                        break;
-                    case "17":
-                        repayLoan();
-                        break;
-                    case "18":
-                        checkLoanLimit();
-                        break;
-                    case "19":
-                        running = false;
-                        System.out.println(
-                                "Thank you for using IgirePay!");
+                        inMenu = false;
                         break;
                     default:
-                        System.out.println(
-                                "Invalid choice. Try again.");
+                        System.out.println("Invalid choice. Try again.");
                 }
-
             } catch (Exception e) {
-                System.out.println(
-                        "Operation failed: " + e.getMessage());
+                System.out.println("Operation failed: " + e.getMessage());
             }
 
             System.out.println();
         }
-
-        scanner.close();
     }
 
-    private static void displayMenu() {
-        System.out.println("========== IGIREPAY ==========");
-        System.out.println("1. Register customer");
-        System.out.println("2. Create wallet account");
-        System.out.println("3. Create savings account");
-        System.out.println("4. View customer");
-        System.out.println("5. Update customer details");
-        System.out.println("6. View customer accounts");
-        System.out.println("7. View account balance");
-        System.out.println("8. Delete inactive account");
-        System.out.println("9. Deposit money");
-        System.out.println("10. Withdraw money");
-        System.out.println("11. Transfer money");
-        System.out.println("12. View transaction history");
-        System.out.println("13. Create customer PIN");
-        System.out.println("14. Validate customer PIN");
-        System.out.println("15. Change customer PIN");
-        System.out.println("16. Request a loan");
-        System.out.println("17. Repay a loan");
-        System.out.println("18. Check eligible loan limit");
-        System.out.println("19. Exit");
-        System.out.print("Choose an option: ");
+    private static void accountManagementMenu() {
+        boolean inMenu = true;
+
+        while (inMenu) {
+            System.out.println("\n========== ACCOUNT MANAGEMENT ==========");
+            System.out.println("1. Create wallet account");
+            System.out.println("2. Create savings account");
+            System.out.println("3. View customer accounts");
+            System.out.println("4. View account balance");
+            System.out.println("5. Delete inactive account");
+            System.out.println("9. Back to main menu");
+            System.out.print("Choose an option: ");
+
+            String choice = readLine().trim();
+
+            try {
+                switch (choice) {
+                    case "1":
+                        createAccount("WALLET");
+                        break;
+                    case "2":
+                        createAccount("SAVINGS");
+                        break;
+                    case "3":
+                        viewCustomerAccounts();
+                        break;
+                    case "4":
+                        viewAccountBalance();
+                        break;
+                    case "5":
+                        deleteInactiveAccount();
+                        break;
+                    case "9":
+                        inMenu = false;
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Try again.");
+                }
+            } catch (Exception e) {
+                System.out.println("Operation failed: " + e.getMessage());
+            }
+
+            System.out.println();
+        }
     }
 
+    private static void transactionMenu() {
+        boolean inMenu = true;
+
+        while (inMenu) {
+            System.out.println("\n========== TRANSACTIONS ==========");
+            System.out.println("1. Deposit money");
+            System.out.println("2. Withdraw money");
+            System.out.println("3. Transfer money");
+            System.out.println("4. View transaction history");
+            System.out.println("5. Export transactions to CSV");
+            System.out.println("6. View daily transaction summary");
+            System.out.println("7. Print customer transaction statement");
+            System.out.println("9. Back to main menu");
+            System.out.print("Choose an option: ");
+
+            String choice = readLine().trim();
+
+            try {
+                switch (choice) {
+                    case "1":
+                        deposit();
+                        break;
+                    case "2":
+                        withdraw();
+                        break;
+                    case "3":
+                        transfer();
+                        break;
+                    case "4":
+                        viewTransactionHistory();
+                        break;
+                    case "5":
+                        exportTransactions();
+                        break;
+                    case "6":
+                        viewDailySummary();
+                        break;
+                    case "7":
+                        printCustomerStatement();
+                        break;
+                    case "9":
+                        inMenu = false;
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Try again.");
+                }
+            } catch (Exception e) {
+                System.out.println("Operation failed: " + e.getMessage());
+            }
+
+            System.out.println();
+        }
+    }
+    private static void exportTransactions() throws Exception {
+
+        int accountID = readInt("Enter account ID: ");
+
+        Account account = getAuthenticatedAccount(accountID);
+
+        if (account == null) {
+            return;
+        }
+
+        System.out.print("Enter CSV file name (default: transactions.csv): ");
+        String fileName = readLine().trim();
+
+        if (fileName.isBlank()) {
+            fileName = "transactions.csv";
+        }
+
+        transactionDAO.exportTransactionsToCSV(
+                java.nio.file.Path.of(fileName));
+
+        System.out.println("Transactions exported to: " + fileName);
+    }
+
+    private static void viewDailySummary() throws Exception {
+
+        int accountID = readInt("Enter account ID: ");
+
+        Account account = getAuthenticatedAccount(accountID);
+
+        if (account == null) {
+            return;
+        }
+
+        System.out.print("Enter date (YYYY-MM-DD): ");
+        java.time.LocalDate date =
+                java.time.LocalDate.parse(readLine().trim());
+
+        String summary =
+                transactionDAO.getDailyTransactionSummary(date);
+
+        System.out.println("\n" + summary);
+    }
+
+    private static void printCustomerStatement() throws Exception {
+
+        int accountID = readInt("Enter account ID: ");
+
+        Account account = getAuthenticatedAccount(accountID);
+
+        if (account == null) {
+            return;
+        }
+
+        String statement =
+                transactionDAO.getCustomerTransactionStatement(
+                        account.getCustomerID());
+
+        System.out.println("\n" + statement);
+    }
+
+    private static void pinManagementMenu() {
+        boolean inMenu = true;
+
+        while (inMenu) {
+            System.out.println("\n========== PIN MANAGEMENT ==========");
+            System.out.println("1. Create customer PIN");
+            System.out.println("2. Validate customer PIN");
+            System.out.println("3. Change customer PIN");
+            System.out.println("9. Back to main menu");
+            System.out.print("Choose an option: ");
+
+            String choice = readLine().trim();
+
+            try {
+                switch (choice) {
+                    case "1":
+                        createCustomerPin();
+                        break;
+                    case "2":
+                        validateCustomerPin();
+                        break;
+                    case "3":
+                        changeCustomerPin();
+                        break;
+                    case "9":
+                        inMenu = false;
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Try again.");
+                }
+            } catch (Exception e) {
+                System.out.println("Operation failed: " + e.getMessage());
+            }
+
+            System.out.println();
+        }
+    }
+
+    private static void loanManagementMenu() {
+        boolean inMenu = true;
+
+        while (inMenu) {
+            System.out.println("\n========== LOAN MANAGEMENT ==========");
+            System.out.println("1. Request a loan");
+            System.out.println("2. Repay a loan");
+            System.out.println("3. Check eligible loan limit");
+            System.out.println("9. Back to main menu");
+            System.out.print("Choose an option: ");
+
+            String choice = readLine().trim();
+
+            try {
+                switch (choice) {
+                    case "1":
+                        requestLoan();
+                        break;
+                    case "2":
+                        repayLoan();
+                        break;
+                    case "3":
+                        checkLoanLimit();
+                        break;
+                    case "9":
+                        inMenu = false;
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Try again.");
+                }
+            } catch (Exception e) {
+                System.out.println("Operation failed: " + e.getMessage());
+            }
+
+            System.out.println();
+        }
+    }
 
     private static String readLine() {
         if (console != null) {
