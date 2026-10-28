@@ -17,10 +17,11 @@ public class AccountDAO {
 
 
 
+
     public int addAccount(Account account) throws SQLException {
-       String sql = "SELECT id, customer_id, account_type, balance " +
-                "FROM accounts " +
-                "WHERE customer_id = ? ORDER BY id";
+
+        String sql = "INSERT INTO accounts (customer_id, account_type, balance) " +
+                "VALUES (?, ?, ?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(
@@ -39,9 +40,9 @@ public class AccountDAO {
             }
         }
 
-        throw new SQLException(
-                "Creating account failed; no ID was returned.");
+        throw new SQLException("Creating account failed; no ID returned.");
     }
+
 
 
 
