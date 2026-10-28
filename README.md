@@ -8,7 +8,7 @@ The project uses Java and JDBC to manage customer and account information stored
 
 ## Account Types
 
-IgirePay supports the following account types:
+IgirePay supports wallet accounts for customer transactions and savings accounts for saving funds.
 
 - **Wallet Account:** Used to hold a customer's available balance for transactions.
 - **Savings Account:** An account type intended to hold a customer's savings balance.
