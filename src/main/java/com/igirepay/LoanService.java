@@ -27,6 +27,92 @@ public class LoanService {
     private static final DateTimeFormatter DATE_FORMAT =
             DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm");
 
+    public String getLoanSummary() throws SQLException {
+        String sql = """
+                SELECT status, COUNT(*) AS total_loans,
+                       COALESCE(SUM(amount), 0) AS total_amount,
+                       COALESCE(SUM(total_due), 0) AS total_due
+                FROM loan_requests
+                GROUP BY status
+                ORDER BY status
+                """;
+
+        StringBuilder report = new StringBuilder("LOAN SUMMARY\n");
+        report.append("--------------------------------------------------\n");
+        boolean found = false;
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet result = statement.executeQuery()) {
+
+            while (result.next()) {
+                found = true;
+                report.append("Status: ").append(result.getString("status")).append("\n");
+                report.append("Loans: ").append(result.getLong("total_loans")).append("\n");
+                report.append("Amount issued: ").append(result.getBigDecimal("total_amount"))
+                        .append(" RWF\n");
+                report.append("Total due: ").append(result.getBigDecimal("total_due"))
+                        .append(" RWF\n");
+                report.append("--------------------------------------------------\n");
+            }
+        }
+
+        return found ? report.toString() : "No loan requests found.";
+    }
+
+    public String listLoans(String status) throws SQLException {
+        String sql = """
+                SELECT lr.id, lr.customer_id, c.full_name, lr.account_id,
+                       lr.amount, lr.total_due, lr.amount_paid, lr.status, lr.due_date
+                FROM loan_requests lr
+                JOIN customers c ON c.id = lr.customer_id
+                WHERE (? IS NULL OR lr.status = ?)
+                ORDER BY lr.id DESC
+                """;
+
+        StringBuilder report = new StringBuilder();
+        if (status == null) {
+            report.append("ALL LOAN REQUESTS\n");
+        } else {
+            report.append(status).append(" LOANS\n");
+        }
+        report.append("--------------------------------------------------\n");
+        boolean found = false;
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            if (status == null) {
+                statement.setNull(1, java.sql.Types.VARCHAR);
+                statement.setNull(2, java.sql.Types.VARCHAR);
+            } else {
+                statement.setString(1, status);
+                statement.setString(2, status);
+            }
+
+            try (ResultSet result = statement.executeQuery()) {
+                while (result.next()) {
+                    found = true;
+                    report.append("Loan ID: ").append(result.getInt("id")).append("\n");
+                    report.append("Customer ID: ").append(result.getInt("customer_id"))
+                            .append(" (").append(result.getString("full_name")).append(")\n");
+                    report.append("Account ID: ").append(result.getInt("account_id")).append("\n");
+                    report.append("Amount: ").append(result.getBigDecimal("amount"))
+                            .append(" RWF\n");
+                    report.append("Total due: ").append(result.getBigDecimal("total_due"))
+                            .append(" RWF\n");
+                    report.append("Amount paid: ").append(result.getBigDecimal("amount_paid"))
+                            .append(" RWF\n");
+                    report.append("Status: ").append(result.getString("status")).append("\n");
+                    report.append("Due date: ").append(result.getTimestamp("due_date")).append("\n");
+                    report.append("--------------------------------------------------\n");
+                }
+            }
+        }
+
+        return found ? report.toString() : "No loans found.";
+    }
+
     public BigDecimal getEligibleLimit(int customerID)
             throws SQLException {
 

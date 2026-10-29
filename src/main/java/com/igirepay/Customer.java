@@ -9,6 +9,7 @@ public class Customer {
     private String fullName;
     private String email;
     private String phoneNumber;
+    private int accountCount;
     private List<Account> accounts;
 
     public Customer(int customerID, String fullName,
@@ -18,7 +19,26 @@ public class Customer {
         setEmail(email);
         setPhoneNumber(phoneNumber);
         this.accounts = new ArrayList<>();
+        this.accountCount = 0;
     }
+
+
+    public Customer(String fullName, String email, String phoneNumber) {
+        setFullName(fullName);
+        setEmail(email);
+        setPhoneNumber(phoneNumber);
+        this.accounts = new ArrayList<>();
+        this.accountCount = 0;
+    }
+
+    public int getAccountCount() {
+        return accountCount;
+    }
+
+    public void setAccountCount(int accountCount) {
+        this.accountCount = Math.max(accountCount, 0);
+    }
+
 
     public int getCustomerID() {
         return customerID;
@@ -73,6 +93,7 @@ public class Customer {
             throw new IllegalArgumentException("Accounts list is required");
         }
         this.accounts = accounts;
+        this.accountCount = accounts.size();
     }
 
     public void addAccount(Account account) {
@@ -86,6 +107,14 @@ public class Customer {
         }
 
         accounts.add(account);
+        this.accountCount = accounts.size();
+    }
+
+    public String toCustomerProfile() {
+        return "Name: " + fullName
+                + ", Email: " + email
+                + ", Phone: " + phoneNumber
+                + ", Number of accounts: " + accountCount;
     }
 
     @Override
@@ -94,6 +123,6 @@ public class Customer {
                 + ", Name: " + fullName
                 + ", Email: " + email
                 + ", Phone: " + phoneNumber
-                + ", Number of accounts: " + accounts.size();
+                + ", Number of accounts: " + accountCount;
     }
 }
